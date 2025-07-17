@@ -40,8 +40,10 @@ function notFoundError(notFoundId, routeResponseObject) {
 // Index
 function index(request, response) {
 
+    // Declare index route query
     const indexQuery = 'SELECT * FROM `posts`;';
 
+    // Execute query
     connection.query(indexQuery, (error, result) => {
 
         // IF there is a query error
@@ -68,8 +70,10 @@ function show(request, response) {
     // Get request id parameter
     const requestId = request.params.id;
 
+    // Declare show route query
     const showQuery = 'SELECT * FROM `posts` WHERE `id` = ?;';
 
+    // Execute query
     connection.query(showQuery, [requestId], (error, result) => {
 
         // IF there is a query error
@@ -125,6 +129,41 @@ function modify(request, response) {
 // Destroy
 function destroy(request, response) {
 
+    // Get request id parameter
+    const requestId = request.params.id;
+
+    // Declare destroy route query
+    const showQuery = 'DELETE FROM `posts` WHERE `id` = ?;';
+
+    // Execute query
+    connection.query(showQuery, [requestId], (error, result) => {
+
+        // IF there is a query error
+        if (error) {
+
+            // Call internal server error function
+            internalServerError(response);
+
+            // Stop function execution
+            return;
+
+        }
+
+        // IF requested ID doesn't exist
+        if (result.length === 0) {
+
+            // Call not found error (404)
+            notFoundError(requestId, response);
+
+            // Stop function execution
+            return;
+
+        }
+
+        // Send 204 status (no content)
+        response.sendStatus(204);
+
+    });
 
 
 }
