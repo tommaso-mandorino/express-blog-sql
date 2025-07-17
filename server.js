@@ -1,9 +1,6 @@
 // Port importing from .env file
 const PORT = process.env.EXPRESS_PORT;
 
-// Database connection importing
-const connection = require('./database/connection.js');
-
 // Router importing
 const postsRouter = require('./routers/posts.js');
 
